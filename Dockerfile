@@ -6,7 +6,6 @@ WORKDIR /compose/hello-docker
 COPY src/hello-world.go main.go
 
 RUN go mod init go-nica && go mod tidy
-RUN go get github.com/shirou/gopsutil/cpu
 RUN CGO_ENABLED=0 go build -o hello main.go
 
 FROM scratch
