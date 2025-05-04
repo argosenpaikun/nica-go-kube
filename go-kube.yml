@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: go-ps
+  labels:
+    team: prod-team
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-service
+  namespace: go-ps
+  labels:
+    app: go-ap
+spec:
+  ports:
+    - name: go-8081-tcp
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    com.docker.project: hello-go
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-deployment
+  namespace: go-ps
+  labels:
+    com.docker.project: hello-go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      com.docker.project: hello-go
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        com.docker.project: hello-go
+    spec:
+      containers:
+        - image: go/hello:latest
+          name: hello-go
+          ports:
+            - containerPort: 8081
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}

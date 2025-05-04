@@ -1,0 +1,3 @@
+### How to Restart Kubernetes
+kubectl Rollout Restart:
+https://kubernetes.io/docs/reference/kubectl/generated/kubectl_rollout/kubectl_rollout_restart/
