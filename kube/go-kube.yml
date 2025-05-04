@@ -44,7 +44,7 @@ spec:
         com.docker.project: hello-go
     spec:
       containers:
-        - image: ghcr.io/argosenpaikun/hello-go:1.0.3
+        - image: ghcr.io/argosenpaikun/hello-go:latest
           name: hello-go
           ports:
             - containerPort: 8081
