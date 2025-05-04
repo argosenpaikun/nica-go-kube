@@ -5,3 +5,7 @@ https://kubernetes.io/docs/reference/kubectl/generated/kubectl_rollout/kubectl_r
 ### Setup Postgres in Kubernets
 Postgres Kubernetes Confiugration:
 https://www.digitalocean.com/community/tutorials/how-to-deploy-postgres-to-kubernetes-cluster 
+
+### Switching Namespace
+Switching Namespaces Using the kubectl Command:
+https://www.baeldung.com/ops/kubernetes-switch-namespaces
