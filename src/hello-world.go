@@ -14,6 +14,10 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	method := r.Method
+	path := r.URL.Path
+	ip := r.RemoteAddr
+	userAgent := r.UserAgent()
 
 	fmt.Println(r.URL.RawQuery)
 	fmt.Fprint(w, `
@@ -60,6 +64,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "Current Memory Usage: %.2f%%\n", memUsage.UsedPercent)
 	fmt.Fprintf(w, "Disk Usage: Total: %d GB, Used: %d GB, Free: %d GB, Usage: %.2f%%\n", diskUsage.Total/1024/1024/1024, diskUsage.Used/1024/1024/1024, diskUsage.Free/1024/1024/1024, diskUsage.UsedPercent)
+	fmt.Fprint(w, "\n")
+	fmt.Fprintf(w, "Logged: %s %s from %s", method, path, ip)
+	fmt.Fprintf(w, "User Agent: %s", userAgent)
 }
 
 func main() {
