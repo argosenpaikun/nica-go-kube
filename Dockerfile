@@ -9,6 +9,7 @@ COPY src/hello-world.go main.go
 RUN go mod init go-nica && go mod tidy
 
 RUN go get github.com/shirou/gopsutil/v3/cpu && \
+    go get github.com/jmoiron/sqlx && \
     go get github.com/lib/pq
 
 RUN CGO_ENABLED=0 go build -o hello main.go
