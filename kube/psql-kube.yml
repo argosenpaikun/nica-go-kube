@@ -55,7 +55,7 @@ metadata:
   name: postgres
   namespace: psql-ps
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: postgres
@@ -78,6 +78,7 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresdata
+      restartPolicy: Always
       volumes:
         - name: postgresdata
           persistentVolumeClaim:
@@ -91,8 +92,12 @@ metadata:
   labels:
     app: postgres
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 5432
+      protocol: TCP
+      targetPort: 5432
   selector:
     app: postgres
+status:
+  loadBalancer: {}
