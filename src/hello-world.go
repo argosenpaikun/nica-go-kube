@@ -28,7 +28,7 @@ const (
 
 func createDatabase(w http.ResponseWriter) {
 	// Connect to default postgres DB to create target DB if needed
-	superConnStr := fmt.Sprintf("host=%s port=%d user=%s dbname=ps_db sslmode=disable",
+	superConnStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=ps_db sslmode=disable",
 		dbHost, dbPort, superUser, superPassword)
 	superDB, err := sql.Open("postgres", superConnStr)
 	if err != nil {
