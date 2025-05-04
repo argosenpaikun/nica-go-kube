@@ -9,3 +9,7 @@ https://www.digitalocean.com/community/tutorials/how-to-deploy-postgres-to-kuber
 ### Switching Namespace
 Switching Namespaces Using the kubectl Command:
 https://www.baeldung.com/ops/kubernetes-switch-namespaces
+
+## Connect Postgres Database
+Database Connection:
+kubectl exec -it <pod_name> -- psql -h localhost -U ps_user --password -p 5432 ps_db

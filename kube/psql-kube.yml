@@ -52,10 +52,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: postgres-deployment
   namespace: psql-ps
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -70,15 +70,12 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
-              protocol: TCP
-          resources: {}
           envFrom:
             - configMapRef:
                 name: postgres-secret
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresdata
-      restartPolicy: Always
       volumes:
         - name: postgresdata
           persistentVolumeClaim:
