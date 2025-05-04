@@ -24,7 +24,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	\    \         __/
 	\____\_______/
 		
-	Hello World from Docker and Kubernetes! v1.0.3
+	Hello World from Docker and Kubernetes! v1.0.2
 	`)
 
 	cpuUsage, err := cpu.Percent(time.Second, false)
