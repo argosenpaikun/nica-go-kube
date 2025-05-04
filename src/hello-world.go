@@ -65,8 +65,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Current Memory Usage: %.2f%%\n", memUsage.UsedPercent)
 	fmt.Fprintf(w, "Disk Usage: Total: %d GB, Used: %d GB, Free: %d GB, Usage: %.2f%%\n", diskUsage.Total/1024/1024/1024, diskUsage.Used/1024/1024/1024, diskUsage.Free/1024/1024/1024, diskUsage.UsedPercent)
 	fmt.Fprint(w, "\n")
-	fmt.Fprintf(w, "Logged: %s %s from %s", method, path, ip)
-	fmt.Fprintf(w, "User Agent: %s", userAgent)
+	fmt.Fprintf(w, "Logged: %s %s from %s\n", method, path, ip)
+	fmt.Fprintf(w, "User Agent: %s\n", userAgent)
 }
 
 func main() {
