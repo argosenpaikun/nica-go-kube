@@ -1,3 +1,7 @@
 ### How to Restart Kubernetes
 kubectl Rollout Restart:
 https://kubernetes.io/docs/reference/kubectl/generated/kubectl_rollout/kubectl_rollout_restart/
+
+### Setup Postgres in Kubernets
+Postgres Kubernetes Confiugration:
+https://www.digitalocean.com/community/tutorials/how-to-deploy-postgres-to-kubernetes-cluster 
