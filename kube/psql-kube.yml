@@ -7,7 +7,7 @@ metadata:
     app: postgres
 data:
   #POSTGRES_DB: ps_db
-  #OSTGRES_USER: ps_user
+  #POSTGRES_USER: ps_user
   #POSTGRES_PASSWORD: SecurePassword
   POSTGRES_DB: ${POSTGRES_DB}
   POSTGRES_USER: ${POSTGRES_USER}
