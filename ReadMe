@@ -43,3 +43,25 @@ Run in Git Bash or WSL:
 ```
 CONFIG_NAME=my-config CONFIG_VALUE=hello envsubst < file.yml | kubectl apply -f -
 ```
+
+### Creating Cluster Using Kind
+Create Cluster Using Kind:
+https://medium.com/@muthanagavamsi/install-kubernetes-on-windows-11-with-kind-8b06c303d09c 
+
+### Create Docker Secret (from CLI)
+CLI Code:
+```
+kubectl create secret docker-registry regcred \
+  --docker-server=https://index.docker.io/v1/ \ -> change to https://ghcr.io (if using Github), fundamental refer to respective repository io registry
+  --docker-username=your-username \
+  --docker-password=your-password \
+  --docker-email=your-email@example.com
+
+```
+
+### MetalLB Manifes
+Create MetalLB namespace - apply this first
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
+
+Create MetalLB manifest - this is second
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml

@@ -6,12 +6,12 @@ metadata:
   labels:
     app: postgres
 data:
-  #POSTGRES_DB: ps_db
-  #POSTGRES_USER: ps_user
-  #POSTGRES_PASSWORD: SecurePassword
-  POSTGRES_DB: ${POSTGRES_DB}
-  POSTGRES_USER: ${POSTGRES_USER}
-  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  POSTGRES_DB: ps_db
+  POSTGRES_USER: ps_user
+  POSTGRES_PASSWORD: SecurePassword
+  #POSTGRES_DB: ${POSTGRES_DB}
+  #POSTGRES_USER: ${POSTGRES_USER}
+  #POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -51,7 +51,7 @@ metadata:
   name: postgres-deployment
   namespace: psql-ps
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: postgres
