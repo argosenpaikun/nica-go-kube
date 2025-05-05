@@ -19,7 +19,7 @@ import (
 const (
 	superUser     = "ps_user"
 	superPassword = "SecurePassword"
-	dbHost        = "localhost"
+	dbHost        = "172.19.0.5"
 	dbName        = "weblogs"
 	dbPort        = 5432
 	dbUser        = "ps_user"
@@ -37,6 +37,15 @@ func createDatabase(w http.ResponseWriter) {
 		return
 	}
 	defer superDB.Close()
+
+	err = superDB.Ping()
+	if err != nil {
+		log.Fatalf("Database uncreachable: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	} else {
+		log.Printf("Successfully connect with database: %s", superDB)
+	}
 
 	// Create database if not exists
 	_, err = superDB.Exec(fmt.Sprintf("CREATE DATABASE %s", dbName))
@@ -59,6 +68,15 @@ func createTable(w http.ResponseWriter) {
 	}
 	defer db.Close()
 
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Database uncreachable: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	} else {
+		log.Printf("Successfully connect with database: %s", db)
+	}
+
 	// Create log table if not exists
 	createTable := `
 	CREATE TABLE IF NOT EXISTS logs (
@@ -70,7 +88,6 @@ func createTable(w http.ResponseWriter) {
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	);
 	`
-
 	_, err = db.Exec(createTable)
 	if err != nil {
 		log.Fatalf("Failed to create logs table: %v", err)
@@ -113,6 +130,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Database uncreachable: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	} else {
+		log.Printf("Successfully connect with database: %s", db)
 	}
 
 	_, err = db.Exec(`
