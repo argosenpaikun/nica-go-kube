@@ -12,7 +12,25 @@ https://www.baeldung.com/ops/kubernetes-switch-namespaces
 
 ### Connect Postgres Database
 Database Connection:
+```
 kubectl exec -it <pod_name> -- psql -h localhost -U ps_user --password -p 5432 ps_db
+```
+
+#### Kubectl Backup and Restore Postgres Database
+Backup database:
+```
+kubectl exec -it postgres-665b7554dc-cddgq -- pg_dump -U ps_user -d ps_db > db_backup.sql
+```
+
+Copy backup database into kubernetes pod:
+```
+kubectl cp db_backup.sql postgres-665b7554dc-cddgq:/tmp/db_backup.sql
+```
+
+Connect to PostgreSQL pod using /bin/bash:
+```
+kubectl exec -it postgres-665b7554dc-cddgq -- /bin/bash
+```
 
 ### Kubectl File Passed Argument
 Using Git Bash or WSL with envsubst:
