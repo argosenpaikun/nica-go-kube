@@ -17,6 +17,5 @@ RUN CGO_ENABLED=0 go build -o hello main.go
 FROM scratch
 COPY --from=build /compose/hello-docker/hello /usr/local/bin/hello
 
-USER go
 EXPOSE 8081
 CMD ["/usr/local/bin/hello"]
