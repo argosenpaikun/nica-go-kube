@@ -65,3 +65,9 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manif
 
 Create MetalLB manifest - this is second
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
+
+### Deploy Prometheus Operator
+Prometheus operator command:
+```
+kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/master/bundle.yaml -n monitoring
+```

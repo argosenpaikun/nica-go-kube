@@ -13,8 +13,6 @@ spec:
   selector:
     com.docker.project: hello-go
   type: LoadBalancer
-status:
-  loadBalancer: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -36,11 +34,11 @@ spec:
         com.docker.project: hello-go
     spec:
       containers:
-        - image: ghcr.io/argosenpaikun/hello-go:latest
-        #- image: ${IMAGE}
+        #- image: ghcr.io/argosenpaikun/hello-go:latest
+        - image: ${IMAGE}
           name: hello-go
           ports:
             - containerPort: 8081
               protocol: TCP
-          resources: {}
-status: {}
+      imagePullSecrets:
+        - name: regcred

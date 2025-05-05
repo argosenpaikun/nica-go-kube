@@ -56,6 +56,9 @@ kind: Service
 metadata:
   name: node-exporter-service
   namespace: monitoring
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port:   '9100'
 spec:
   selector:
     app: node-exporter
