@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,43 +12,43 @@ import (
 	"github.com/shirou/gopsutil/mem"
 	"github.com/shirou/gopsutil/v3/disk"
 
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
 const (
+	superDBName   = "ps_db"
 	superUser     = "ps_user"
 	superPassword = "SecurePassword"
 	dbHost        = "172.19.0.5"
 	dbName        = "weblogs"
-	dbPort        = 5432
+	dbPort        = "5432"
 	dbUser        = "ps_user"
 	dbPassword    = "SecurePassword"
 )
 
 func createDatabase(w http.ResponseWriter) {
 	// Connect to default postgres DB to create target DB if needed
-	superConnStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=ps_db sslmode=disable",
-		dbHost, dbPort, superUser, superPassword)
-	superDB, err := sql.Open("postgres", superConnStr)
+	superConnStr := "host=" + dbHost +
+		" port=" + dbPort +
+		" user=" + superUser +
+		" password=" + superPassword +
+		" dbname=" + superDBName +
+		" sslmode=disable"
+
+	superDB, err := sqlx.Connect("postgres", superConnStr)
 	if err != nil {
 		log.Fatalf("Failed to connect to postgres DB: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	defer superDB.Close()
 
-	err = superDB.Ping()
-	if err != nil {
-		log.Fatalf("Database uncreachable: %v", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	} else {
-		log.Printf("Successfully connect with database: %s", superDB)
-	}
-
 	// Create database if not exists
-	_, err = superDB.Exec(fmt.Sprintf("CREATE DATABASE %s", dbName))
+	_, err = superDB.Exec("CREATE DATABASE " + dbName)
 	if err != nil {
+		log.Printf(`pq: database "%s" already exists`, dbName)
 		if err.Error() != fmt.Sprintf(`pq: database "%s" already exists`, dbName) {
 			log.Printf("Warning: %v", err)
 		}
@@ -58,9 +57,14 @@ func createDatabase(w http.ResponseWriter) {
 
 func createTable(w http.ResponseWriter) {
 	// Connect to database
-	dbConnStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		dbHost, dbPort, dbUser, dbPassword, dbName)
-	db, err := sql.Open("postgres", dbConnStr)
+	dbConnStr := "host=" + dbHost +
+		" port=" + dbPort +
+		" user=" + dbUser +
+		" password=" + dbPassword +
+		" dbname=" + dbName +
+		" sslmode=disable"
+
+	db, err := sqlx.Connect("postgres", dbConnStr)
 	if err != nil {
 		log.Fatalf("Failed to connect to %s DB: %v", dbName, err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -68,25 +72,16 @@ func createTable(w http.ResponseWriter) {
 	}
 	defer db.Close()
 
-	err = db.Ping()
-	if err != nil {
-		log.Fatalf("Database uncreachable: %v", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	} else {
-		log.Printf("Successfully connect with database: %s", db)
-	}
-
 	// Create log table if not exists
 	createTable := `
 	CREATE TABLE IF NOT EXISTS logs (
-		id SERIAL PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
 		ip_address TEXT,
-		method TEXT,
-		path TEXT,
-		user_agent TEXT,
-		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-	);
+        method TEXT,
+        path TEXT,
+        user_agent TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
 	`
 	_, err = db.Exec(createTable)
 	if err != nil {
@@ -109,16 +104,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// Create new database table if not exists
 	createTable(w)
 
-	var db *sql.DB
+	var db *sqlx.DB
 	var err error
 	psqlInfo := "host=" + dbHost +
-		" port=" + string(rune(dbPort)) +
+		" port=" + dbPort +
 		" user=" + dbUser +
 		" password=" + dbPassword +
 		" dbname=" + dbName +
 		" sslmode=disable"
 
-	db, err = sql.Open("postgres", psqlInfo)
+	db, err = sqlx.Connect("postgres", psqlInfo)
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -130,8 +125,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Database uncreachable: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	} else {
-		log.Printf("Successfully connect with database: %s", db)
 	}
 
 	_, err = db.Exec(`
