@@ -17,9 +17,10 @@ import (
 )
 
 const (
+	superDBName   = "ps_db"
 	superUser     = "ps_user"
 	superPassword = "SecurePassword"
-	dbHost        = "localhost"
+	dbHost        = "172.19.0.5"
 	dbName        = "weblogs"
 	dbPort        = "5432"
 	dbUser        = "ps_user"
