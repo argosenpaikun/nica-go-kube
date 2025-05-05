@@ -67,7 +67,8 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: ghcr.io/argosenpaikun/postgres:latest
+          image: ${IMAGE}
+          #image: ghcr.io/argosenpaikun/postgres:latest
           ports:
             - containerPort: 5432
           envFrom:
