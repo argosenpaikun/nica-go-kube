@@ -45,8 +45,7 @@ spec:
     spec:
       containers:
         #- image: ghcr.io/argosenpaikun/hello-go:latest
-        - image: ${IMAGE} 
-          imagePullPolicy: IfNotPresent
+        - image: ${IMAGE}
           name: hello-go
           ports:
             - containerPort: 8081

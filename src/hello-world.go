@@ -20,7 +20,7 @@ const (
 	superDBName   = "ps_db"
 	superUser     = "ps_user"
 	superPassword = "SecurePassword"
-	dbHost        = "172.19.0.5"
+	dbHost        = "172.19.0.6"
 	dbName        = "weblogs"
 	dbPort        = "5432"
 	dbUser        = "ps_user"
@@ -42,8 +42,16 @@ func createDatabase(w http.ResponseWriter) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	defer superDB.Close()
+
+	err = superDB.Ping()
+	if err != nil {
+		log.Fatalf("Database uncreachable: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	} else {
+		log.Printf("Successfully connect with database: %s", superDBName)
+	}
 
 	// Create database if not exists
 	_, err = superDB.Exec("CREATE DATABASE " + dbName)
@@ -71,6 +79,15 @@ func createTable(w http.ResponseWriter) {
 		return
 	}
 	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Database uncreachable: %v", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	} else {
+		log.Printf("Successfully connect with database: %s", dbName)
+	}
 
 	// Create log table if not exists
 	createTable := `
@@ -125,6 +142,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Database uncreachable: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	} else {
+		log.Printf("Successfully connect with database: %s", dbName)
 	}
 
 	_, err = db.Exec(`
@@ -149,7 +168,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	\    \         __/
 	\____\_______/
 		
-	Hello World from Docker and Kubernetes! v1.0.4
+	Hello World from Docker and Kubernetes! v1.0.3
 	`)
 
 	cpuUsage, err := cpu.Percent(time.Second, false)
