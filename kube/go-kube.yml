@@ -7,8 +7,7 @@ metadata:
     app: go-ap
 spec:
   ports:
-    - name: hello-8081-tcp
-      port: 8081
+    - port: 8081
       protocol: TCP
       targetPort: 8081
   selector:
