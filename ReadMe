@@ -10,6 +10,18 @@ https://www.digitalocean.com/community/tutorials/how-to-deploy-postgres-to-kuber
 Switching Namespaces Using the kubectl Command:
 https://www.baeldung.com/ops/kubernetes-switch-namespaces
 
-## Connect Postgres Database
+### Connect Postgres Database
 Database Connection:
 kubectl exec -it <pod_name> -- psql -h localhost -U ps_user --password -p 5432 ps_db
+
+### Kubectl File Passed Argument
+Using Git Bash or WSL with envsubst:
+```
+metadata:
+  name: ${CONFIG_NAME}
+```
+
+Run in Git Bash or WSL:
+```
+CONFIG_NAME=my-config CONFIG_VALUE=hello envsubst < file.yml | kubectl apply -f -
+```
