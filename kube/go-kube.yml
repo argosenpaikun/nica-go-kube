@@ -22,7 +22,7 @@ metadata:
   labels:
     com.docker.project: hello-go
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       com.docker.project: hello-go
