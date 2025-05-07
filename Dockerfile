@@ -1,6 +1,6 @@
 FROM golang:latest AS build
 LABEL maintainer="Affian Onn <affianonn@hotmail.com>"
-#LABEL org.opencontainers.image.source=https://github.com/argosenpaikun/nica-go-kube
+LABEL org.opencontainers.image.source=https://github.com/argosenpaikun/nica-go-kube
 
 WORKDIR /compose/hello-docker
 
